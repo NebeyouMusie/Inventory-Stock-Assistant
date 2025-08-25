@@ -102,8 +102,8 @@ Automate your inventory management through conversational AI. This project lets 
 
 ### 5. Test the Workflow
 
-- Send a message like: “What is the stock for Product ID 1001?”
-- Try an update: “Set Current Stock of Product ID 1001 to 45.”
+- Send a message like: “What is the stock for Product ID 110?"
+- Try an update: “Set Current Stock of Product ID 110 to 45."
 - Confirm that the Google Sheet reads/updates correctly and the agent replies with a concise confirmation.
 
 ---
