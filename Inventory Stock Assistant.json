@@ -1,0 +1,275 @@
+{
+  "name": "Inventory Stock Assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "32f79caf-39c0-466d-970d-e715a2b3347d",
+      "name": "When chat message received",
+      "webhookId": "bfa96466-7f9d-43e3-9982-df18513d6953"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are an AI assistant specialized in managing inventory data. Your functionalities are limited to two operations only:\n\n1. Providing accurate inventory details when requested. This includes product ID, name, variant, current stock, and low stock threshold.\n\n2. Updating inventory records based on user input. Updates may involve changing current stock levels or modifying low stock thresholds.\n\nDo not perform any unrelated tasks or provide information beyond inventory details and updates. Always confirm successful updates and provide clear, concise inventory data when queried. If a request falls outside these operations, politely inform the user that you can only assist with inventory queries and updates."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        352,
+        0
+      ],
+      "id": "dc5a188b-fd2e-4570-aa3d-e797f2d08ae2",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        320,
+        224
+      ],
+      "id": "86ff6ef9-a36a-4a94-b565-d980b60d1cde",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        160,
+        224
+      ],
+      "id": "60df147f-0df4-4206-908c-3aea4e60e044",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "NchtBD6sEH0vCYg4",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "198gV8mx3BnZZxm8YSeJfQPvBeg7OuON1XdyJA9sMWm8",
+          "mode": "list",
+          "cachedResultName": "Inventory Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/198gV8mx3BnZZxm8YSeJfQPvBeg7OuON1XdyJA9sMWm8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 328667228,
+          "mode": "list",
+          "cachedResultName": "Inventory Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/198gV8mx3BnZZxm8YSeJfQPvBeg7OuON1XdyJA9sMWm8/edit#gid=328667228"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        560,
+        224
+      ],
+      "id": "7d6b31d2-4726-4672-b528-47372a32caf3",
+      "name": "Get Inventory Stock Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "puIDvD1AGruBiW0E",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "198gV8mx3BnZZxm8YSeJfQPvBeg7OuON1XdyJA9sMWm8",
+          "mode": "list",
+          "cachedResultName": "Inventory Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/198gV8mx3BnZZxm8YSeJfQPvBeg7OuON1XdyJA9sMWm8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 328667228,
+          "mode": "list",
+          "cachedResultName": "Inventory Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/198gV8mx3BnZZxm8YSeJfQPvBeg7OuON1XdyJA9sMWm8/edit#gid=328667228"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('row_number__using_to_match_', ``, 'number') }}",
+            "Product ID": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Product_ID', ``, 'string') }}",
+            "Product Name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Product_Name', ``, 'string') }}",
+            "Variant": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Variant', ``, 'string') }}",
+            "Current Stock": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Current_Stock', ``, 'string') }}",
+            "Low Stock Threshold": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Low_Stock_Threshold', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Product ID",
+              "displayName": "Product ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Product Name",
+              "displayName": "Product Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Variant",
+              "displayName": "Variant",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Current Stock",
+              "displayName": "Current Stock",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Low Stock Threshold",
+              "displayName": "Low Stock Threshold",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        784,
+        224
+      ],
+      "id": "4057f18d-6c51-4b6c-a042-2bae6e54ac31",
+      "name": "Update Inventory Stock Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "puIDvD1AGruBiW0E",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Inventory Stock Data": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Inventory Stock Data": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ebd15de0-61c3-4fe4-9007-39c3893d4e1d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "840154ca8ff3822257170e4b1910defa5b76a2ee2e5b52ef94b6628e655db31a"
+  },
+  "id": "LF5ypGw71pSb9KrN",
+  "tags": []
+}
